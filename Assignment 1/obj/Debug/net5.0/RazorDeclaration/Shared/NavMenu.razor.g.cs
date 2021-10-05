@@ -90,7 +90,7 @@ using Assignment_1.Shared;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 28 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Shared\NavMenu.razor"
+#line 23 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Shared\NavMenu.razor"
        
     private bool collapseNavMenu = true;
 
