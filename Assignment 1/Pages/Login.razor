@@ -16,9 +16,12 @@
         <div style="color:red">@errorMessage</div>
 
 <div hidden="@showLogin" class="login-div">
-<a href="" @onclick="PerformLogin">
-    Login
-</a>
+    <a href="" @onclick="PerformLogin">
+        Login
+    </a>
+    <a href="register">
+        Register
+    </a>
 </div>
 <div hidden="@showLogout" class="logout-div">
     <a href="" @onclick="PerformLogout">
@@ -59,6 +62,12 @@
 
     public void PerformLogin() {
         Console.WriteLine("Setting user info...");
+        if (username == null || username.Equals(""))
+        {
+            Console.WriteLine("No info entered!");
+            errorMessage = "error";
+            return;
+        }
         TheUser.UserName = username;
         TheUser.Role = "Admin";
         

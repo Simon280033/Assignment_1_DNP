@@ -9,7 +9,7 @@ namespace FileData
     public class FileContext
     {
         public IList<Adult> Adults { get; private set; }
-
+        
         private readonly string adultsFile = "adults.json";
 
         public FileContext()

@@ -1,0 +1,63 @@
+﻿@page "/Register"
+@using Models
+@using FileData
+@inject NavigationManager NavigationManager
+
+<h3>Register</h3>
+
+<div class="form-group">
+            <label>User name:</label>
+            <input type="text" placeholder="user name" @bind-value="username"/>
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" placeholder="password" @bind-value="password"/>
+        </div>
+        <div style="color:red">@errorMessage</div>
+
+<div class="register-div">
+    <a href="" @onclick="PerformRegistration">
+        Register
+    </a>
+</div>
+<div class="cancel-div">
+    <a href="" @onclick="Cancel">
+        Cancel
+    </a>
+</div>
+
+@code {
+    private string username;
+    private string password;
+    private string errorMessage;
+
+    public void PerformRegistration() {
+        if (username == null || username.Equals("") || password == null || password.Equals(""))
+        {
+            Console.WriteLine("Info lacking!");
+            errorMessage = "error";
+            return;
+        }
+
+        User NewUser = new User();
+        NewUser.UserName = username;
+        NewUser.Role = "Admin";
+        NewUser.Password = password;
+
+    // We write to json if the user doesnt exist
+        UsersHandler uh = new UsersHandler();
+
+        if (!uh.UserExists(NewUser.UserName))
+        {
+            uh.WriteNewUser(NewUser);
+        }
+    
+
+        //NavigationManager.NavigateTo("/");
+    }
+
+    public void Cancel() {
+        NavigationManager.NavigateTo("/");
+    }
+
+}
