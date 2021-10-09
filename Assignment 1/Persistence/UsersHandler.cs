@@ -57,5 +57,17 @@ namespace FileData
 
             SaveChanges();
         }
+        
+        public User GetUser(string username)
+        {
+            for (int i = 0; i < Users.Count; i++)
+            {
+                if (Users[i].UserName.Equals(username))
+                {
+                    return Users[i];
+                }
+            }
+            return null;
+        }
     }
 }

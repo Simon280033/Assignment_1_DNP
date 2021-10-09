@@ -1,5 +1,6 @@
 ﻿@page "/login"
 @using Models
+@using FileData
 @namespace LoginComponent
 
 @inject NavigationManager NavigationManager
@@ -62,16 +63,34 @@
 
     public void PerformLogin() {
         Console.WriteLine("Setting user info...");
-        if (username == null || username.Equals(""))
+        if (username == null || username.Equals("") || password == null || password.Equals(""))
         {
-            Console.WriteLine("No info entered!");
+            Console.WriteLine("Lacking info!");
             errorMessage = "error";
             return;
         }
-        TheUser.UserName = username;
-        TheUser.Role = "Admin";
         
-        NavigationManager.NavigateTo("/");
+        // We check if the user exists
+        UsersHandler uh = new UsersHandler();
+
+        if (uh.UserExists(username))
+        {
+            User TempUser = uh.GetUser(username);
+            if (TempUser.Password.Equals(password))
+            {
+                Console.WriteLine("Logged in!");
+                
+                TheUser.UserName = username;
+                TheUser.Role = "Admin";
+                
+                NavigationManager.NavigateTo("/");
+            }
+        }
+        else
+        {
+            Console.WriteLine("User doesn't exist!");
+            errorMessage = "No such user";
+        }
     }
 
     public void PerformLogout() {
