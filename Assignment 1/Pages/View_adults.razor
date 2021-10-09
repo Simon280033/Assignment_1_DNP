@@ -8,6 +8,83 @@
 
 <h3>View adults</h3>
 
+<h5>Filters</h5>
+
+<div class="nameSearch">
+    <label >Name: </label>
+    <input placeholder="Name...">
+</div>
+
+<div class="jobSearch">
+        <label >Job: </label>
+    <input placeholder="Job title...">
+</div>
+
+<div class="sexChoice">
+    <label for="genders">Gender:</label>
+    <select id="genders" name="genders">
+        <option value="any">Any</option>
+        <option value="M">Male</option>
+        <option value="F">Female</option>
+    </select>
+</div>
+
+<div class="ageChoice">
+    <label for="ages">Age:</label>
+    <select id="ages" name="ages">
+        <option value="all">Above/below</option>
+        <option value="above">Above</option>
+        <option value="below">Below</option>
+    </select>
+    <input type="number" placeholder="Age...">
+</div>
+
+<div class="heightChoice">
+    <label for="heights">Height:</label>
+    <select id="heights" name="heights">
+        <option value="all">Above/below</option>
+        <option value="above">Above</option>
+        <option value="below">Below</option>
+    </select>
+    <input type="number" placeholder="Height in cm...">
+</div>
+
+<div class="weightChoice">
+    <label for="weights">Weight:</label>
+    <select id="weights" name="weights">
+        <option value="all">Above/below</option>
+        <option value="above">Above</option>
+        <option value="below">Below</option>
+    </select>
+    <input type="number" placeholder="Weight in kg...">
+</div>
+
+<div class="salaryChoice">
+    <label for="salaries">Weight:</label>
+    <select id="salaries" name="salaries">
+        <option value="all">Above/below</option>
+        <option value="above">Above</option>
+        <option value="below">Below</option>
+    </select>
+    <input type="number" placeholder="Salary in DKK...">
+</div>
+
+<div class="eyeChoice">
+    <label for="eyeColors">Eye color:</label>
+    <select id="eyeColors" name="eyeColors">
+        <option value="all">Any</option>
+    </select>
+</div>
+
+<div class="hairChoice">
+    <label for="hairColors">Hair color:</label>
+    <select id="hairColors" name="hairColors">
+        <option value="all">Any</option>
+    </select>
+</div>
+
+<button type="button">Search</button>
+
 <p hidden="@hideInfo" style="white-space: pre-wrap;" >@infoText</p>
 
 <ul>
