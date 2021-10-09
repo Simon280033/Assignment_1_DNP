@@ -1,0 +1,98 @@
+@page "/view_adults"
+@using FileData
+@using Microsoft.AspNetCore.Mvc.ModelBinding.Binders
+@using Microsoft.Extensions.DependencyInjection
+@using Models
+@inject User TheUser
+@inject NavigationManager NavigationManager
+
+<h3>View adults</h3>
+
+<p hidden="@hideInfo" style="white-space: pre-wrap;" >@infoText</p>
+
+<ul>
+    <li >            
+        <input readonly style="@HeaderStyle" value="ID"/>
+        <input readonly style="@HeaderStyle" value="First name"/>
+        <input readonly style="@HeaderStyle" value="Last name"/>
+        <input readonly style="@HeaderStyle" value="Age"/>
+        <input readonly style="@HeaderStyle" value="Sex"/>
+
+    </li>
+
+    @foreach (var adult in adults)
+    {
+        <li>
+            <input readonly @bind="adult.Id"/>
+            <input readonly @bind="adult.FirstName"/>
+            <input readonly @bind="adult.LastName"/>
+            <input readonly @bind="adult.Age"/>
+            <input readonly @bind="adult.Sex"/>
+
+            <button type="button" @onclick="() => ShowInfo(adult)">View/hide more info</button>
+        </li>
+    }
+</ul>
+
+@code {
+    private bool hideInfo = true;
+    private readonly string HeaderStyle = "text-shadow:0px 0px 2px black; background-color: #d1d1d1;";
+    private IList<Adult> adults = new List<Adult>();
+
+    private string infoText = "No adult selected";
+    
+    FileContext fc = new FileContext();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Start();
+    }
+    
+    public void Start()
+    {
+        if (TheUser.UserName == null)
+        {
+            Console.WriteLine("User is null! Navigating to login...");
+
+            NavigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            adults = fc.Adults;
+        }
+    }
+
+    public void ShowInfo(Adult adult)
+    {
+        String infoToShow = BuildInfoText(adult);
+        if (!infoText.Equals(infoToShow))
+        {
+            infoText = infoToShow;
+            hideInfo = false;
+        }
+        else
+        {
+            hideInfo = true;
+            infoText = "No adult selected";
+        }
+    }
+
+    public string BuildInfoText(Adult adult)
+    {
+        string str = "Info for '" + adult.FirstName + " " + adult.LastName + "':\n\n";
+
+        str += "ID: " + adult.Id + "\n";
+        str += "First name: " + adult.FirstName + "\n";
+        str += "Last name: " + adult.LastName + "\n";
+        str += "Age: " + adult.Age + "\n";
+        str += "Sex: " + adult.Sex + "\n";
+        str += "Height: " + adult.Height + "\n";
+        str += "Weight: " + adult.Weight + "\n";
+        str += "Hair color: " + adult.HairColor + "\n";
+        str += "Eye color: " + adult.EyeColor + "\n";
+        str += "Job title: " + adult.JobTitle.JobTitle + "\n";
+        str += "Salary: " + adult.JobTitle.Salary + "\n";
+
+        return str;
+    }
+}

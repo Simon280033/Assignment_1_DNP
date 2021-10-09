@@ -98,8 +98,9 @@ using Models;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 12 "C:\Users\simon\RiderProjects\Assignment_1_DNP\Assignment 1\Pages\Index.razor"
+#line 19 "C:\Users\simon\RiderProjects\Assignment_1_DNP\Assignment 1\Pages\Index.razor"
        
+    private bool hideLogin = true;
 
     protected override async Task OnInitializedAsync()
     {
@@ -110,13 +111,10 @@ using Models;
     {
         if (TheUser.UserName == null)
         {
-            Console.WriteLine("User is null! Navigating to login...");
+            Console.WriteLine("User is not logged in!");
 
-            NavigationManager.NavigateTo("/login");
+            hideLogin = false;
         }
-
-        string value = TheUser.UserName;
-        Console.WriteLine(value);
     }
 
 #line default

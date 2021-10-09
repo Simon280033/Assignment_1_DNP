@@ -1,11 +1,12 @@
-@page "/adults"
+﻿@page "/Add_adults"
 @using FileData
 @using Microsoft.AspNetCore.Mvc.ModelBinding.Binders
 @using Microsoft.Extensions.DependencyInjection
 @using Models
 @inject User TheUser
+@inject NavigationManager NavigationManager
 
-<h3>Adults</h3>
+<h3>Add adults</h3>
 
 @code {
     FileContext fc = new FileContext();
@@ -17,6 +18,13 @@
     
     public void Start()
     {
+        if (TheUser.UserName == null)
+        {
+            Console.WriteLine("User is null! Navigating to login...");
+
+            NavigationManager.NavigateTo("/login");
+        }
+
         string value = TheUser.UserName;
         Console.WriteLine(value);
     }
