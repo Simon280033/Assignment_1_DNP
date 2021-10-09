@@ -1,9 +1,23 @@
 @page "/adults"
 @using FileData
+@using Microsoft.AspNetCore.Mvc.ModelBinding.Binders
+@using Microsoft.Extensions.DependencyInjection
+@using Models
+@inject User TheUser
 
 <h3>Adults</h3>
 
 @code {
     FileContext fc = new FileContext();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Start();
+    }
     
+    public void Start()
+    {
+        string value = TheUser.UserName;
+        Console.WriteLine(value);
+    }
 }

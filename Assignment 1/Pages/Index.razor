@@ -1,7 +1,31 @@
 @page "/"
+@using Models
+@inject User TheUser
+@inject NavigationManager NavigationManager
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?"/>
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        Start();
+    }
+    
+    public void Start()
+    {
+        if (TheUser.UserName == null)
+        {
+            Console.WriteLine("User is null! Navigating to login...");
+
+            NavigationManager.NavigateTo("/login");
+        }
+
+        string value = TheUser.UserName;
+        Console.WriteLine(value);
+    }
+}

@@ -1,0 +1,78 @@
+﻿@page "/login"
+@using Models
+@namespace LoginComponent
+
+@inject NavigationManager NavigationManager
+@inject User TheUser
+
+<div class="form-group">
+            <label>User name:</label>
+            <input type="text" placeholder="user name" @bind-value="username"/>
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" placeholder="password" @bind-value="password"/>
+        </div>
+        <div style="color:red">@errorMessage</div>
+
+<div hidden="@showLogin" class="login-div">
+<a href="" @onclick="PerformLogin">
+    Login
+</a>
+</div>
+<div hidden="@showLogout" class="logout-div">
+    <a href="" @onclick="PerformLogout">
+            Log out
+        </a>
+</div>
+
+@code {
+    private bool showLogin = true;
+    private bool showLogout = false;
+    private string username;
+    private string password;
+    private string errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ShowButtons();
+    }
+    
+    public void ShowButtons()
+    {
+        // If the user is logged in, show logout
+        if (TheUser.UserName != null)
+        {
+            Console.WriteLine("User IS logged in!");
+            showLogin = true;
+            showLogout = false;
+        }
+        else
+        {
+    // If not, show login
+            Console.WriteLine("User is not logged in!");
+            showLogin = false;
+            showLogout = true;
+        }
+
+    }
+
+    public void PerformLogin() {
+        Console.WriteLine("Setting user info...");
+        TheUser.UserName = username;
+        TheUser.Role = "Admin";
+        
+        NavigationManager.NavigateTo("/");
+    }
+
+    public void PerformLogout() {
+        Console.WriteLine("Wiping user info...");
+
+        username = "";
+        password = "";
+        errorMessage = "Logout";
+        TheUser.UserName = username;
+        TheUser.Role = "";
+    }
+
+}

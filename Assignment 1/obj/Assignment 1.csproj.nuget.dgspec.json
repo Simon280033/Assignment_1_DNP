@@ -1,27 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\simon\\RiderProjects\\Assignment 1\\Assignment 1\\Assignment 1.csproj": {}
+    "C:\\Users\\simon\\RiderProjects\\Assignment_1_DNP\\Assignment 1\\Assignment 1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\simon\\RiderProjects\\Assignment 1\\Assignment 1\\Assignment 1.csproj": {
+    "C:\\Users\\simon\\RiderProjects\\Assignment_1_DNP\\Assignment 1\\Assignment 1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\simon\\RiderProjects\\Assignment 1\\Assignment 1\\Assignment 1.csproj",
+        "projectUniqueName": "C:\\Users\\simon\\RiderProjects\\Assignment_1_DNP\\Assignment 1\\Assignment 1.csproj",
         "projectName": "Assignment 1",
-        "projectPath": "C:\\Users\\simon\\RiderProjects\\Assignment 1\\Assignment 1\\Assignment 1.csproj",
+        "projectPath": "C:\\Users\\simon\\RiderProjects\\Assignment_1_DNP\\Assignment 1\\Assignment 1.csproj",
         "packagesPath": "C:\\Users\\simon\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\simon\\RiderProjects\\Assignment 1\\Assignment 1\\obj\\",
+        "outputPath": "C:\\Users\\simon\\RiderProjects\\Assignment_1_DNP\\Assignment 1\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
           "C:\\Users\\simon\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
-        "sources": {
-          "https://api.nuget.org/v3/index.json": {}
-        },
         "frameworks": {
           "net5.0": {
             "targetAlias": "net5.0",
@@ -55,7 +55,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Users\\simon\\.dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.303\\RuntimeIdentifierGraph.json"
         }
       }
     }
