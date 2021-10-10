@@ -111,7 +111,7 @@
             newAdult.JobTitle.JobTitle = jobTitle;
             newAdult.JobTitle.Salary = salary;
             newAdult.Height = height;
-            newAdult.Sex = sexChoice;
+            newAdult.Sex = sexChoice.Substring(0, 1); // We get the first character, so M or F
             newAdult.Weight = weight;
             newAdult.EyeColor = eyeColor;
             newAdult.FirstName = firstName;
