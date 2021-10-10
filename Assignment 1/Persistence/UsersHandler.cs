@@ -15,7 +15,6 @@ namespace FileData
         public UsersHandler()
         {
             Users = File.Exists(usersFile) ? ReadData<User>(usersFile) : new List<User>();
-            Console.WriteLine("Count: " + Users.Count);
         }
 
         private IList<T> ReadData<T>(string s)

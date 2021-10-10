@@ -15,7 +15,6 @@ namespace FileData
         public FileContext()
         {
             Adults = File.Exists(adultsFile) ? ReadData<Adult>(adultsFile) : new List<Adult>();
-            Console.WriteLine("Count: " + Adults.Count);
         }
 
         private IList<T> ReadData<T>(string s)

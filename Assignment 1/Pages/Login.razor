@@ -11,20 +11,21 @@
 <div class="login-area" hidden="@showLogin">
 <div class="form-group">
             <label>User name:</label>
-            <input type="text" placeholder="user name" @bind-value="username"/>
+            <input type="text" placeholder="Username..." @bind-value="username"/>
         </div>
         <div class="form-group">
             <label>Password</label>
-            <input type="password" placeholder="password" @bind-value="password"/>
+            <input type="password" placeholder="Password..." @bind-value="password"/>
         </div>
 <div style="color:red">@errorMessage</div>
 </div>
 <div hidden="@showLogin" class="login-div">
-    <a href="" @onclick="PerformLogin">
-        Login
-    </a>
+    <button type="button" @onclick="PerformLogin">
+        Login 
+    </button>
+    or
     <a href="register">
-        Register
+        register
     </a>
 </div>
 <div hidden="@showLogout" class="logout-div">
@@ -65,11 +66,13 @@
     }
 
     public void PerformLogin() {
+        errorMessage = "";
+
         Console.WriteLine("Setting user info...");
         if (username == null || username.Equals("") || password == null || password.Equals(""))
         {
             Console.WriteLine("Lacking info!");
-            errorMessage = "error";
+            errorMessage = "Error logging in!";
             return;
         }
         
@@ -88,11 +91,15 @@
                 
                 NavigationManager.NavigateTo("/");
             }
+            else
+            {
+                errorMessage = "Password incorrect!";
+            }
         }
         else
         {
             Console.WriteLine("User doesn't exist!");
-            errorMessage = "No such user";
+            errorMessage = "No such user exists!";
         }
     }
 

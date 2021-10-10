@@ -98,7 +98,7 @@ using Models;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 19 "C:\Users\simon\RiderProjects\Assignment_1_DNP\Assignment 1\Pages\Index.razor"
+#line 23 "C:\Users\simon\RiderProjects\Assignment_1_DNP\Assignment 1\Pages\Index.razor"
        
     private bool hideLogin = true;
 

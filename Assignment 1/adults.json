@@ -238,5 +238,20 @@
     "Weight": 93,
     "Height": 181,
     "Sex": "M"
+  },
+  {
+    "JobTitle": {
+      "JobTitle": "Arbejdsl\u00F8s",
+      "Salary": 0
+    },
+    "Id": 16,
+    "FirstName": "Hans",
+    "LastName": "Frank",
+    "HairColor": "White",
+    "EyeColor": "Black",
+    "Age": 41,
+    "Weight": 87,
+    "Height": 189,
+    "Sex": "Male"
   }
 ]

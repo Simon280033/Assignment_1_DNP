@@ -63,6 +63,9 @@
 
 <button type="button" @onclick="AddAdult">Add</button>
 
+<div style="color:red">@errorMessage</div>
+<div style="color:green">@successMessage</div>
+
 @code {
     private string firstName = "";
     private string lastName = "";
@@ -75,6 +78,8 @@
     private string eyeColor = "";
     private string hairColor = "";
 
+    private string errorMessage = "";
+    private string successMessage = "";
     
     FileContext fc = new FileContext();
 
@@ -91,13 +96,11 @@
 
             NavigationManager.NavigateTo("/login");
         }
-
-        string value = TheUser.UserName;
-        Console.WriteLine(value);
     }
 
     public void AddAdult()
     {
+        successMessage = "";
         if (AllFilled())
         {
             Adult newAdult = new Adult();
@@ -117,12 +120,15 @@
             fc.Adults.Add(newAdult);
             fc.SaveChanges();
             Console.WriteLine("New adult added!");
+            successMessage = "Successfully added new adult!";
+            ClearAll();
         }
     }
 
     public bool AllFilled()
     {
         int empties = 0;
+        errorMessage = "";
 
         if (firstName.Equals("") || firstName == null)
         {
@@ -164,6 +170,24 @@
         {
             empties++;
         }
+        if (empties != 0)
+        {
+            errorMessage = "Please fill out all the fields with proper values!";
+        }
         return (empties == 0);
+    }
+
+    public void ClearAll()
+    {
+    firstName = "";
+    lastName = "";
+    jobTitle = "";
+    sexChoice = "Male";
+    age = 0;
+    height = 0;
+    weight = 0;
+    salary = 0;
+    eyeColor = "";
+    hairColor = "";
     }
 }

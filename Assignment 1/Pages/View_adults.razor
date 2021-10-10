@@ -10,90 +10,95 @@
 
 <h5>Filters</h5>
 
-<div class="nameSearch">
-    <label >Name: </label>
-    <input placeholder="Name..." @bind-value="nameSearch">
-</div>
+<div class="filters">
+    <div class="nameSearch">
+        <b><label>Name: </label></b>
+        <input placeholder="Name..." @bind-value="nameSearch">
+    </div>
 
-<div class="jobSearch">
-        <label >Job: </label>
-    <input placeholder="Job title..." @bind-value="jobSearch">
-</div>
+    <div class="jobSearch">
+        <b><label >Job: </label></b>
+        <input placeholder="Job title..." @bind-value="jobSearch">
+    </div>
 
-<div class="sexChoice">
-    <label for="genders">Gender:</label>
-    <select id="genders" name="genders" @bind="gender">
-        <option value="any">Any</option>
-        <option value="M">Male</option>
-        <option value="F">Female</option>
-    </select>
-</div>
+    <div class="sexChoice">
+        <b><label for="genders">Gender:</label></b>
+        <select id="genders" name="genders" @bind="gender">
+            <option value="any">Any</option>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+        </select>
+    </div>
 
-<div class="ageChoice">
-    <label for="ages">Age:</label>
-    <select id="ages" name="ages" @bind="ageFilter">
-        <option value="all">Above/below</option>
-        <option value="above">Above</option>
-        <option value="below">Below</option>
-    </select>
-    <input type="number" placeholder="Age..." @bind-value="age">
-</div>
+    <div class="ageChoice">
+        <b><label for="ages">Age:</label></b>
+        <select id="ages" name="ages" @bind="ageFilter">
+            <option value="all">Above/below</option>
+            <option value="above">Above</option>
+            <option value="below">Below</option>
+        </select>
+        <input type="number" placeholder="Age..." @bind-value="age">
+    </div>
 
-<div class="heightChoice">
-    <label for="heights">Height:</label>
-    <select id="heights" name="heights" @bind="heightFilter">
-        <option value="all">Above/below</option>
-        <option value="above">Above</option>
-        <option value="below">Below</option>
-    </select>
-    <input type="number" placeholder="Height in cm..." @bind-value="height">
-</div>
+    <div class="heightChoice">
+        <b><label for="heights">Height:</label></b>
+        <select id="heights" name="heights" @bind="heightFilter">
+            <option value="all">Above/below</option>
+            <option value="above">Above</option>
+            <option value="below">Below</option>
+        </select>
+        <input type="number" placeholder="Height in cm..." @bind-value="height">
+    </div>
 
-<div class="weightChoice">
-    <label for="weights">Weight:</label>
-    <select id="weights" name="weights" @bind="weightFilter">
-        <option value="all">Above/below</option>
-        <option value="above">Above</option>
-        <option value="below">Below</option>
-    </select>
-    <input type="number" placeholder="Weight in kg..." @bind-value="weight">
-</div>
+    <div class="weightChoice">
+        <b><label for="weights">Weight:</label></b>
+        <select id="weights" name="weights" @bind="weightFilter">
+            <option value="all">Above/below</option>
+            <option value="above">Above</option>
+            <option value="below">Below</option>
+        </select>
+        <input type="number" placeholder="Weight in kg..." @bind-value="weight">
+    </div>
 
-<div class="salaryChoice">
-    <label for="salaries">Salary:</label>
-    <select id="salaries" name="salaries" @bind="salaryFilter">
-        <option value="all">Above/below</option>
-        <option value="above">Above</option>
-        <option value="below">Below</option>
-    </select>
-    <input type="number" placeholder="Salary in DKK..." @bind-value="salary">
-</div>
+    <div class="salaryChoice">
+        <b><label for="salaries">Salary:</label></b>
+        <select id="salaries" name="salaries" @bind="salaryFilter">
+            <option value="all">Above/below</option>
+            <option value="above">Above</option>
+            <option value="below">Below</option>
+        </select>
+        <input type="number" placeholder="Salary in DKK..." @bind-value="salary">
+    </div>
 
-<div class="eyeChoice">
-    <label for="eyeColors">Eye color:</label>
-    <select id="eyeColors" name="eyeColors" @bind="eyeFilter">
-        <option value="all">Any</option>
+    <div class="eyeChoice">
+        <b><label for="eyeColors">Eye color:</label></b>
+        <select id="eyeColors" name="eyeColors" @bind="eyeFilter">
+            <option value="all">Any</option>
             @foreach (var eyeColor in eyeColors)
             {
                 <option>@eyeColor</option>
             }
-    </select>
-</div>
+        </select>
+    </div>
 
-<div class="hairChoice">
-    <label for="hairColors">Hair color:</label>
-    <select id="hairColors" name="hairColors" @bind="hairFilter">
-        <option value="all">Any</option>
+    <div class="hairChoice">
+        <b><label for="hairColors">Hair color:</label></b>
+        <select id="hairColors" name="hairColors" @bind="hairFilter">
+            <option value="all">Any</option>
             @foreach (var hairColor in hairColors)
             {
                 <option>@hairColor</option>
             }
-    </select>
+        </select>
+    </div>
 </div>
 
 <button type="button" @onclick="Search">Search</button>
 
-<p hidden="@hideInfo" style="white-space: pre-wrap;" >@infoText</p>
+<div hidden="@hideInfo" style="border:2px; border-style:solid; border-color:#d1d1d1; padding: 1em; border-radius: 25px;">
+    <p style="white-space: pre-wrap;" >@infoText</p>
+    <button type="button" @onclick="HideInfo">Hide info</button>
+</div>
 
 <ul>
     <li >            
@@ -177,6 +182,12 @@
                 hairColors.Add(adult.HairColor);
             }
         }
+    }
+
+    public void HideInfo()
+    {
+        hideInfo = true;
+        infoText = "";
     }
 
     public void ShowInfo(Adult adult)
