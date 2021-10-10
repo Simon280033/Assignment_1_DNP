@@ -6,6 +6,9 @@
 @inject NavigationManager NavigationManager
 @inject User TheUser
 
+<h3>Log in/out</h3>
+
+<div class="login-area" hidden="@showLogin">
 <div class="form-group">
             <label>User name:</label>
             <input type="text" placeholder="user name" @bind-value="username"/>
@@ -14,8 +17,8 @@
             <label>Password</label>
             <input type="password" placeholder="password" @bind-value="password"/>
         </div>
-        <div style="color:red">@errorMessage</div>
-
+<div style="color:red">@errorMessage</div>
+</div>
 <div hidden="@showLogin" class="login-div">
     <a href="" @onclick="PerformLogin">
         Login
@@ -99,8 +102,8 @@
         username = "";
         password = "";
         errorMessage = "Logout";
-        TheUser.UserName = username;
-        TheUser.Role = "";
+        TheUser.UserName = null;
+        TheUser.Role = null;
     }
 
 }

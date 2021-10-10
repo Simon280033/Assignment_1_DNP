@@ -8,7 +8,74 @@
 
 <h3>Add adults</h3>
 
+<div class="firstNameField">
+    <label >Name: </label>
+    <input placeholder="First name..." @bind-value="firstName">
+</div>
+
+<div class="lastNameField">
+    <label >Name: </label>
+    <input placeholder="Last name..." @bind-value="lastName">
+</div>
+
+<div class="jobField">
+        <label >Job: </label>
+    <input placeholder="Job title..." @bind-value="jobTitle">
+</div>
+
+<div class="sexChoice">
+    <label for="genders">Gender:</label>
+    <select id="genders" name="genders" @bind="sexChoice">
+        <option value="M">Male</option>
+        <option value="F">Female</option>
+    </select>
+</div>
+
+<div class="ageField">
+    <label>Age:</label>
+    <input type="number" placeholder="Age..." @bind-value="age">
+</div>
+
+<div class="heightField">
+    <label>Height:</label>
+    <input type="number" placeholder="Height in cm..." @bind-value="height">
+</div>
+
+<div class="weightField">
+    <label>Weight:</label>
+    <input type="number" placeholder="Weight in kg..." @bind-value="weight">
+</div>
+
+<div class="salaryField">
+    <label>Salary:</label>
+    <input type="number" placeholder="Salary in DKK..." @bind-value="salary">
+</div>
+
+<div class="eyeField">
+    <label>Eye color:</label>
+    <input placeholder="Eye color..." @bind-value="eyeColor">
+</div>
+
+<div class="hairField">
+    <label>Hair color:</label>
+    <input placeholder="Hair color..." @bind-value="hairColor">
+</div>
+
+<button type="button" @onclick="AddAdult">Add</button>
+
 @code {
+    private string firstName = "";
+    private string lastName = "";
+    private string jobTitle = "";
+    private string sexChoice = "Male";
+    private int age = 0;
+    private int height = 0;
+    private int weight = 0;
+    private int salary = 0;
+    private string eyeColor = "";
+    private string hairColor = "";
+
+    
     FileContext fc = new FileContext();
 
     protected override async Task OnInitializedAsync()
@@ -27,5 +94,76 @@
 
         string value = TheUser.UserName;
         Console.WriteLine(value);
+    }
+
+    public void AddAdult()
+    {
+        if (AllFilled())
+        {
+            Adult newAdult = new Adult();
+            newAdult.JobTitle = new Job();
+            
+            newAdult.Id = fc.Adults.Count;
+            newAdult.Age = age;
+            newAdult.JobTitle.JobTitle = jobTitle;
+            newAdult.JobTitle.Salary = salary;
+            newAdult.Height = height;
+            newAdult.Sex = sexChoice;
+            newAdult.Weight = weight;
+            newAdult.EyeColor = eyeColor;
+            newAdult.FirstName = firstName;
+            newAdult.HairColor = hairColor;
+            newAdult.LastName = lastName;
+            fc.Adults.Add(newAdult);
+            fc.SaveChanges();
+            Console.WriteLine("New adult added!");
+        }
+    }
+
+    public bool AllFilled()
+    {
+        int empties = 0;
+
+        if (firstName.Equals("") || firstName == null)
+        {
+            empties++;
+        }
+        if (lastName.Equals("") || lastName == null)
+        {
+            empties++;
+        }
+        if (jobTitle.Equals("") || jobTitle == null)
+        {
+            empties++;
+        }
+        if (sexChoice.Equals("") || sexChoice == null)
+        {
+            empties++;
+        }
+        if (age < 1 || age > 120)
+        {
+            empties++;
+        }
+        if (height < 1 || height > 300)
+        {
+            empties++;
+        }
+        if (weight < 1 || weight > 300)
+        {
+            empties++;
+        }
+        if (salary < -1)
+        {
+            empties++;
+        }
+        if (eyeColor.Equals("") || eyeColor == null)
+        {
+            empties++;
+        }
+        if (hairColor.Equals("") || hairColor == null)
+        {
+            empties++;
+        }
+        return (empties == 0);
     }
 }

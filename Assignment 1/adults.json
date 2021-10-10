@@ -223,5 +223,20 @@
     "Weight": 81.8,
     "Height": 172,
     "Sex": "M"
+  },
+  {
+    "JobTitle": {
+      "JobTitle": "Fisker",
+      "Salary": 56000
+    },
+    "Id": 15,
+    "FirstName": "Bobby",
+    "LastName": "Jensen",
+    "HairColor": "Gray",
+    "EyeColor": "Gray",
+    "Age": 56,
+    "Weight": 93,
+    "Height": 181,
+    "Sex": "M"
   }
 ]
