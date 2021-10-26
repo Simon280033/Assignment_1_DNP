@@ -6,9 +6,9 @@ using Models;
 
 namespace FileData
 {
-    public class UsersHandler
+    public class UsersHandler : IUsersHandler
     {
-        public IList<User> Users { get; private set; }
+        public IList<User> Users { get; set; }
         
         private readonly string usersFile = "users.json";
 

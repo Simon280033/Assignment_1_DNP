@@ -77,7 +77,7 @@
         }
         
         // We check if the user exists
-        UsersHandler uh = new UsersHandler();
+        IUsersHandler uh = new UsersHandler();
 
         if (uh.UserExists(username))
         {

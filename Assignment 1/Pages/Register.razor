@@ -48,7 +48,7 @@
         NewUser.Password = password;
 
     // We write to json if the user doesnt exist
-        UsersHandler uh = new UsersHandler();
+        IUsersHandler uh = new UsersHandler();
 
         if (!uh.UserExists(NewUser.UserName))
         {

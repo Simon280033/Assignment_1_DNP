@@ -6,9 +6,9 @@ using Models;
 
 namespace FileData
 {
-    public class FileContext
+    public class FileContext : IFileContext
     {
-        public IList<Adult> Adults { get; private set; }
+        public IList<Adult> Adults { get; set; }
         
         private readonly string adultsFile = "adults.json";
 
