@@ -60,3 +60,4 @@ C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\obj\Debug\net5.0\Razor\Pa
 C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\obj\Debug\net5.0\Razor\Pages\Login.razor.g.cs
 C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\obj\Debug\net5.0\Razor\Pages\Register.razor.g.cs
 C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\obj\Debug\net5.0\Razor\Pages\View_adults.razor.g.cs
+C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\bin\Debug\net5.0\users.json

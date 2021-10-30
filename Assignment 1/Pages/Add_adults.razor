@@ -1,10 +1,11 @@
 ﻿@page "/Add_adults"
-@using FileData
 @using Microsoft.AspNetCore.Mvc.ModelBinding.Binders
 @using Microsoft.Extensions.DependencyInjection
 @using Models
+@using Assigntment_2_Web_API
 @inject User TheUser
 @inject NavigationManager NavigationManager
+@inject IAdultsService AdultsService
 
 <h3>Add adults</h3>
 
@@ -81,8 +82,6 @@
     private string errorMessage = "";
     private string successMessage = "";
     
-    IFileContext fc = new FileContext();
-
     protected override async Task OnInitializedAsync()
     {
         Start();
@@ -90,7 +89,7 @@
     
     public void Start()
     {
-        if (TheUser.UserName == null)
+        if (TheUser.userName == null)
         {
             Console.WriteLine("User is null! Navigating to login...");
 
@@ -104,21 +103,20 @@
         if (AllFilled())
         {
             Adult newAdult = new Adult();
-            newAdult.JobTitle = new Job();
+            newAdult.jobTitle = new Job();
             
-            newAdult.Id = fc.Adults.Count;
-            newAdult.Age = age;
-            newAdult.JobTitle.JobTitle = jobTitle;
-            newAdult.JobTitle.Salary = salary;
-            newAdult.Height = height;
-            newAdult.Sex = sexChoice.Substring(0, 1); // We get the first character, so M or F
-            newAdult.Weight = weight;
-            newAdult.EyeColor = eyeColor;
-            newAdult.FirstName = firstName;
-            newAdult.HairColor = hairColor;
-            newAdult.LastName = lastName;
-            fc.Adults.Add(newAdult);
-            fc.SaveChanges();
+            newAdult.id = AdultsService.GetAdultsAsync().Result.Count;
+            newAdult.age = age;
+            newAdult.jobTitle.jobTitle = jobTitle;
+            newAdult.jobTitle.salary = salary;
+            newAdult.height = height;
+            newAdult.sex = sexChoice.Substring(0, 1); // We get the first character, so M or F
+            newAdult.weight = weight;
+            newAdult.eyeColor = eyeColor;
+            newAdult.firstName = firstName;
+            newAdult.hairColor = hairColor;
+            newAdult.lastName = lastName;
+            AdultsService.AddAdultAsync(newAdult);
             Console.WriteLine("New adult added!");
             successMessage = "Successfully added new adult!";
             ClearAll();

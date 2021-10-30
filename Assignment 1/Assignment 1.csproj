@@ -5,8 +5,4 @@
         <RootNamespace>Assignment_1</RootNamespace>
     </PropertyGroup>
 
-    <ItemGroup>
-      <Folder Include="Data" />
-    </ItemGroup>
-
 </Project>

@@ -1,7 +1,8 @@
 ﻿@page "/Register"
 @using Models
-@using FileData
+@using Assigntment_2_Web_API
 @inject NavigationManager NavigationManager
+@inject IUserService UserService
 
 <h3>Register</h3>
 
@@ -43,16 +44,14 @@
         }
 
         User NewUser = new User();
-        NewUser.UserName = username;
-        NewUser.Role = "Admin";
-        NewUser.Password = password;
+        NewUser.userName = username;
+        NewUser.role = "Admin";
+        NewUser.password = password;
 
     // We write to json if the user doesnt exist
-        IUsersHandler uh = new UsersHandler();
-
-        if (!uh.UserExists(NewUser.UserName))
+        if (UserService.CheckIfUserExists(username).Result)
         {
-            uh.WriteNewUser(NewUser);
+            UserService.AddUserAsync(NewUser);
             successMessage = "New user successfully registered!";
             errorMessage = "";
         }

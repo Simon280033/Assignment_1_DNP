@@ -84,28 +84,28 @@ using Assignment_1.Shared;
 #nullable disable
 #nullable restore
 #line 2 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\View_adults.razor"
-using FileData;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 3 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\View_adults.razor"
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\View_adults.razor"
+#line 3 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\View_adults.razor"
 using Microsoft.Extensions.DependencyInjection;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\View_adults.razor"
+#line 4 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\View_adults.razor"
 using Models;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 5 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\View_adults.razor"
+using Assigntment_2_Web_API;
 
 #line default
 #line hidden
@@ -119,7 +119,7 @@ using Models;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 127 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\View_adults.razor"
+#line 128 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\View_adults.razor"
        
     private string nameSearch = "";
     private string jobSearch = "";
@@ -139,20 +139,18 @@ using Models;
 
     private bool hideInfo = true;
     private readonly string HeaderStyle = "text-shadow:0px 0px 2px black; background-color: #d1d1d1;";
-    private IList<Adult> adults = new List<Adult>();
+    private IList<Adult> adults = new List<Adult>(new Adult[0]);
 
     private string infoText = "No adult selected";
     
-    IFileContext fc = new FileContext();
-
     protected override async Task OnInitializedAsync()
     {
         Start();
     }
     
-    public void Start()
+    public async void Start()
     {
-        if (TheUser.UserName == null)
+        if (TheUser.userName == null)
         {
             Console.WriteLine("User is null! Navigating to login...");
 
@@ -160,22 +158,23 @@ using Models;
         }
         else
         {
-            adults = fc.Adults;
+            adults = await AdultsService.GetAdultsAsync();
             SetDropDowns(adults);
+            StateHasChanged();
         }
     }
 
-    public void SetDropDowns(IList<Adult> adultList)
+    public async void SetDropDowns(IList<Adult> adultList)
     {
         foreach (var adult in adultList)
         {
-            if (!eyeColors.Contains(adult.EyeColor))
+            if (!eyeColors.Contains(adult.eyeColor))
             {
-                eyeColors.Add(adult.EyeColor);
+                eyeColors.Add(adult.eyeColor);
             }
-            if (!hairColors.Contains(adult.HairColor))
+            if (!hairColors.Contains(adult.hairColor))
             {
-                hairColors.Add(adult.HairColor);
+                hairColors.Add(adult.hairColor);
             }
         }
     }
@@ -203,26 +202,26 @@ using Models;
 
     public string BuildInfoText(Adult adult)
     {
-        string str = "Info for '" + adult.FirstName + " " + adult.LastName + "':\n\n";
+        string str = "Info for '" + adult.firstName + " " + adult.lastName + "':\n\n";
 
-        str += "ID: " + adult.Id + "\n";
-        str += "First name: " + adult.FirstName + "\n";
-        str += "Last name: " + adult.LastName + "\n";
-        str += "Age: " + adult.Age + "\n";
-        str += "Sex: " + adult.Sex + "\n";
-        str += "Height: " + adult.Height + "\n";
-        str += "Weight: " + adult.Weight + "\n";
-        str += "Hair color: " + adult.HairColor + "\n";
-        str += "Eye color: " + adult.EyeColor + "\n";
-        str += "Job title: " + adult.JobTitle.JobTitle + "\n";
-        str += "Salary: " + adult.JobTitle.Salary + "\n";
+        str += "ID: " + adult.id + "\n";
+        str += "First name: " + adult.firstName + "\n";
+        str += "Last name: " + adult.lastName + "\n";
+        str += "Age: " + adult.age + "\n";
+        str += "Sex: " + adult.sex + "\n";
+        str += "Height: " + adult.height + "\n";
+        str += "Weight: " + adult.weight + "\n";
+        str += "Hair color: " + adult.hairColor + "\n";
+        str += "Eye color: " + adult.eyeColor + "\n";
+        str += "Job title: " + adult.jobTitle.jobTitle + "\n";
+        str += "Salary: " + adult.jobTitle.salary + "\n";
 
         return str;
     }
 
-    public void Search()
+    public async void Search()
     {
-        IList<Adult> allAdults = fc.Adults;
+        IList<Adult> allAdults = await AdultsService.GetAdultsAsync();
 
     IList<Adult> tempAdults = new List<Adult>();
 
@@ -231,7 +230,7 @@ using Models;
         {
             bool passes = true;
     // Name
-                if (!(adult.FirstName.ToLower().Contains(nameSearch.ToLower()) || adult.LastName.ToLower().Contains(nameSearch.ToLower()) || (adult.FirstName + " " + adult.LastName).ToLower().Contains(nameSearch.ToLower())))
+                if (!(adult.firstName.ToLower().Contains(nameSearch.ToLower()) || adult.lastName.ToLower().Contains(nameSearch.ToLower()) || (adult.firstName + " " + adult.lastName).ToLower().Contains(nameSearch.ToLower())))
                 {
                     passes = false;
                     continue;
@@ -239,7 +238,7 @@ using Models;
                 else
                 {
     // Job
-                    if (!(adult.JobTitle.JobTitle.Equals("") || adult.JobTitle.JobTitle.ToLower().Contains(jobSearch.ToLower())))
+                    if (!(adult.jobTitle.jobTitle.Equals("") || adult.jobTitle.jobTitle.ToLower().Contains(jobSearch.ToLower())))
                     {
                         passes = false;
                         continue;
@@ -247,7 +246,7 @@ using Models;
                     else
                     {
     // Gender
-                        if (!(adult.Sex.Equals(gender) || gender.Equals("any")))
+                        if (!(adult.sex.Equals(gender) || gender.Equals("any")))
                         {
                             passes = false;
                             continue;
@@ -257,12 +256,12 @@ using Models;
     // Age
                             if (!(ageFilter.Equals("all")))
                             {
-                                if (ageFilter.Equals("above") && adult.Age < age)
+                                if (ageFilter.Equals("above") && adult.age < age)
                                 {
                                     passes = false;
                                     continue;
                                 }
-                                else if (ageFilter.Equals("below") && adult.Age > age)
+                                else if (ageFilter.Equals("below") && adult.age > age)
                                 {
                                     passes = false;
                                     continue;
@@ -271,12 +270,12 @@ using Models;
     // Height
                                 if (!(heightFilter.Equals("all")))
                                 {
-                                    if (heightFilter.Equals("above") && adult.Height < height)
+                                    if (heightFilter.Equals("above") && adult.height < height)
                                     {
                                         passes = false;
                                         continue;
                                     }
-                                    else if (heightFilter.Equals("below") && adult.Height > height)
+                                    else if (heightFilter.Equals("below") && adult.height > height)
                                     {
                                         passes = false;
                                         continue;
@@ -285,12 +284,12 @@ using Models;
     // Weight
                                     if (!(weightFilter.Equals("all")))
                                     {
-                                        if (weightFilter.Equals("above") && adult.Weight < weight)
+                                        if (weightFilter.Equals("above") && adult.weight < weight)
                                         {
                                             passes = false;
                                             continue;
                                         }
-                                        else if (weightFilter.Equals("below") && adult.Weight > weight)
+                                        else if (weightFilter.Equals("below") && adult.weight > weight)
                                         {
                                             passes = false;
                                             continue;
@@ -300,25 +299,25 @@ using Models;
     // Salary
                             if (!(salaryFilter.Equals("all")))
                             {
-                                if (salaryFilter.Equals("above") && adult.JobTitle.Salary < salary)
+                                if (salaryFilter.Equals("above") && adult.jobTitle.salary < salary)
                                 {
                                     passes = false;
                                     continue;
                                 }
-                                else if (salaryFilter.Equals("below") && adult.JobTitle.Salary > salary)
+                                else if (salaryFilter.Equals("below") && adult.jobTitle.salary > salary)
                                 {
                                     passes = false;
                                     continue;
                                 }
                             }
                             // Eyes
-                            if (!(adult.EyeColor.Equals(eyeFilter) || eyeFilter.Equals("all")))
+                            if (!(adult.eyeColor.Equals(eyeFilter) || eyeFilter.Equals("all")))
                             {
                                 passes = false;
                                 continue;
                             }
                             // Hair
-                            if (!(adult.HairColor.Equals(hairFilter) || hairFilter.Equals("all")))
+                            if (!(adult.hairColor.Equals(hairFilter) || hairFilter.Equals("all")))
                             {
                                 passes = false;
                                 continue;
@@ -328,16 +327,19 @@ using Models;
                         }
             if (passes)
                 {
-                    Console.WriteLine(adult.FirstName + " passes filters!");
+                    Console.WriteLine(adult.firstName + " passes filters!");
                     tempAdults.Add(adult);
                 }
             }
         adults = tempAdults;
+        
+        StateHasChanged();
     }
 
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IAdultsService AdultsService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private User TheUser { get; set; }
     }

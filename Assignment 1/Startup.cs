@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Assigntment_2_Web_API;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -28,6 +29,8 @@ namespace Assignment_1
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<IAdultsService, AdultsService>();
             services.AddScoped<User>();
         }
 

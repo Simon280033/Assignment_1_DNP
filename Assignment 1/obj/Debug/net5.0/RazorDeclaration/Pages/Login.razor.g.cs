@@ -91,7 +91,7 @@ using Models;
 #nullable disable
 #nullable restore
 #line 3 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\Login.razor"
-using FileData;
+using Assigntment_2_Web_API;
 
 #line default
 #line hidden
@@ -105,7 +105,7 @@ using FileData;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 37 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\Login.razor"
+#line 38 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\Login.razor"
        
     private bool showLogin = true;
     private bool showLogout = false;
@@ -121,7 +121,7 @@ using FileData;
     public void ShowButtons()
     {
         // If the user is logged in, show logout
-        if (TheUser.UserName != null)
+        if (TheUser.userName != null)
         {
             Console.WriteLine("User IS logged in!");
             showLogin = true;
@@ -137,7 +137,7 @@ using FileData;
 
     }
 
-    public void PerformLogin() {
+    public async Task PerformLogin() {
         errorMessage = "";
 
         Console.WriteLine("Setting user info...");
@@ -149,29 +149,29 @@ using FileData;
         }
         
         // We check if the user exists
-        IUsersHandler uh = new UsersHandler();
-
-        if (uh.UserExists(username))
+        User temp;
+        try
         {
-            User TempUser = uh.GetUser(username);
-            if (TempUser.Password.Equals(password))
+            temp = await UserService.GetUser(username);
+            if (temp != null)
             {
-                Console.WriteLine("Logged in!");
-                
-                TheUser.UserName = username;
-                TheUser.Role = "Admin";
-                
-                NavigationManager.NavigateTo("/");
-            }
-            else
-            {
-                errorMessage = "Password incorrect!";
+                if (temp.password.Equals(password))
+                {
+                    TheUser.userName = temp.userName;
+                    TheUser.role = temp.role;
+                    Console.WriteLine(TheUser.userName + " logged in!");
+                    NavigationManager.NavigateTo("/");
+                }
+                else
+                {
+                    errorMessage = "Wrong password!";
+                }
             }
         }
-        else
+        catch (Exception e)
         {
-            Console.WriteLine("User doesn't exist!");
-            errorMessage = "No such user exists!";
+            Console.WriteLine("Failed to get user...");
+            errorMessage = e.Message;
         }
     }
 
@@ -181,14 +181,15 @@ using FileData;
         username = "";
         password = "";
         errorMessage = "Logout";
-        TheUser.UserName = null;
-        TheUser.Role = null;
+        TheUser.userName = null;
+        TheUser.role = null;
     }
 
 
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IUserService UserService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private User TheUser { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
     }

@@ -84,28 +84,28 @@ using Assignment_1.Shared;
 #nullable disable
 #nullable restore
 #line 2 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\Add_adults.razor"
-using FileData;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 3 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\Add_adults.razor"
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\Add_adults.razor"
+#line 3 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\Add_adults.razor"
 using Microsoft.Extensions.DependencyInjection;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\Add_adults.razor"
+#line 4 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\Add_adults.razor"
 using Models;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 5 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\Add_adults.razor"
+using Assigntment_2_Web_API;
 
 #line default
 #line hidden
@@ -119,7 +119,7 @@ using Models;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 69 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\Add_adults.razor"
+#line 70 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\Add_adults.razor"
        
     private string firstName = "";
     private string lastName = "";
@@ -135,8 +135,6 @@ using Models;
     private string errorMessage = "";
     private string successMessage = "";
     
-    IFileContext fc = new FileContext();
-
     protected override async Task OnInitializedAsync()
     {
         Start();
@@ -144,7 +142,7 @@ using Models;
     
     public void Start()
     {
-        if (TheUser.UserName == null)
+        if (TheUser.userName == null)
         {
             Console.WriteLine("User is null! Navigating to login...");
 
@@ -158,21 +156,20 @@ using Models;
         if (AllFilled())
         {
             Adult newAdult = new Adult();
-            newAdult.JobTitle = new Job();
+            newAdult.jobTitle = new Job();
             
-            newAdult.Id = fc.Adults.Count;
-            newAdult.Age = age;
-            newAdult.JobTitle.JobTitle = jobTitle;
-            newAdult.JobTitle.Salary = salary;
-            newAdult.Height = height;
-            newAdult.Sex = sexChoice.Substring(0, 1); // We get the first character, so M or F
-            newAdult.Weight = weight;
-            newAdult.EyeColor = eyeColor;
-            newAdult.FirstName = firstName;
-            newAdult.HairColor = hairColor;
-            newAdult.LastName = lastName;
-            fc.Adults.Add(newAdult);
-            fc.SaveChanges();
+            newAdult.id = AdultsService.GetAdultsAsync().Result.Count;
+            newAdult.age = age;
+            newAdult.jobTitle.jobTitle = jobTitle;
+            newAdult.jobTitle.salary = salary;
+            newAdult.height = height;
+            newAdult.sex = sexChoice.Substring(0, 1); // We get the first character, so M or F
+            newAdult.weight = weight;
+            newAdult.eyeColor = eyeColor;
+            newAdult.firstName = firstName;
+            newAdult.hairColor = hairColor;
+            newAdult.lastName = lastName;
+            AdultsService.AddAdultAsync(newAdult);
             Console.WriteLine("New adult added!");
             successMessage = "Successfully added new adult!";
             ClearAll();
@@ -248,6 +245,7 @@ using Models;
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IAdultsService AdultsService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private User TheUser { get; set; }
     }

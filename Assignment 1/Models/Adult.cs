@@ -1,5 +1,5 @@
 namespace Models {
 public class Adult : Person {
-    public Job JobTitle { get; set; }
+    public Job jobTitle { get; set; }
 }
 }

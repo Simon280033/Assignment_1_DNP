@@ -109,7 +109,9 @@ using Models;
     
     public void Start()
     {
-        if (TheUser.UserName == null)
+        Console.WriteLine("TheUser: " + TheUser.userName);
+
+        if (TheUser.userName == null)
         {
             Console.WriteLine("User is not logged in!");
 

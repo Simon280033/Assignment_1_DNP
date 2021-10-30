@@ -1,10 +1,11 @@
 ﻿@page "/login"
 @using Models
-@using FileData
+@using Assigntment_2_Web_API
 @namespace LoginComponent
 
 @inject NavigationManager NavigationManager
 @inject User TheUser
+@inject IUserService UserService
 
 <h3>Log in/out</h3>
 
@@ -49,7 +50,7 @@
     public void ShowButtons()
     {
         // If the user is logged in, show logout
-        if (TheUser.UserName != null)
+        if (TheUser.userName != null)
         {
             Console.WriteLine("User IS logged in!");
             showLogin = true;
@@ -65,7 +66,7 @@
 
     }
 
-    public void PerformLogin() {
+    public async Task PerformLogin() {
         errorMessage = "";
 
         Console.WriteLine("Setting user info...");
@@ -77,29 +78,29 @@
         }
         
         // We check if the user exists
-        IUsersHandler uh = new UsersHandler();
-
-        if (uh.UserExists(username))
+        User temp;
+        try
         {
-            User TempUser = uh.GetUser(username);
-            if (TempUser.Password.Equals(password))
+            temp = await UserService.GetUser(username);
+            if (temp != null)
             {
-                Console.WriteLine("Logged in!");
-                
-                TheUser.UserName = username;
-                TheUser.Role = "Admin";
-                
-                NavigationManager.NavigateTo("/");
-            }
-            else
-            {
-                errorMessage = "Password incorrect!";
+                if (temp.password.Equals(password))
+                {
+                    TheUser.userName = temp.userName;
+                    TheUser.role = temp.role;
+                    Console.WriteLine(TheUser.userName + " logged in!");
+                    NavigationManager.NavigateTo("/");
+                }
+                else
+                {
+                    errorMessage = "Wrong password!";
+                }
             }
         }
-        else
+        catch (Exception e)
         {
-            Console.WriteLine("User doesn't exist!");
-            errorMessage = "No such user exists!";
+            Console.WriteLine("Failed to get user...");
+            errorMessage = e.Message;
         }
     }
 
@@ -109,8 +110,8 @@
         username = "";
         password = "";
         errorMessage = "Logout";
-        TheUser.UserName = null;
-        TheUser.Role = null;
+        TheUser.userName = null;
+        TheUser.role = null;
     }
 
 }

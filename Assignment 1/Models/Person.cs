@@ -3,15 +3,15 @@ using System.ComponentModel.DataAnnotations;
 namespace Models {
 public class Person {
     
-    public int Id { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string HairColor { get; set; }
-    public string EyeColor { get; set; }
-    public int Age { get; set; }
-    public float Weight { get; set; }
-    public int Height { get; set; }
-    public string Sex { get; set; }
+    public int id { get; set; }
+    public string firstName { get; set; }
+    public string lastName { get; set; }
+    public string hairColor { get; set; }
+    public string eyeColor { get; set; }
+    public int age { get; set; }
+    public float weight { get; set; }
+    public int height { get; set; }
+    public string sex { get; set; }
 }
 
 

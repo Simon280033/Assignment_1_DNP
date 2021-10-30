@@ -91,7 +91,7 @@ using Models;
 #nullable disable
 #nullable restore
 #line 3 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\Register.razor"
-using FileData;
+using Assigntment_2_Web_API;
 
 #line default
 #line hidden
@@ -105,7 +105,7 @@ using FileData;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 30 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\Register.razor"
+#line 31 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\Register.razor"
        
     private string username;
     private string password;
@@ -122,16 +122,14 @@ using FileData;
         }
 
         User NewUser = new User();
-        NewUser.UserName = username;
-        NewUser.Role = "Admin";
-        NewUser.Password = password;
+        NewUser.userName = username;
+        NewUser.role = "Admin";
+        NewUser.password = password;
 
     // We write to json if the user doesnt exist
-        IUsersHandler uh = new UsersHandler();
-
-        if (!uh.UserExists(NewUser.UserName))
+        if (UserService.CheckIfUserExists(username).Result)
         {
-            uh.WriteNewUser(NewUser);
+            UserService.AddUserAsync(NewUser);
             successMessage = "New user successfully registered!";
             errorMessage = "";
         }
@@ -150,6 +148,7 @@ using FileData;
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IUserService UserService { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
     }
 }
