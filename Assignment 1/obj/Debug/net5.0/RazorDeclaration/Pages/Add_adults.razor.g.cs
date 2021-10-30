@@ -150,15 +150,16 @@ using Assigntment_2_Web_API;
         }
     }
 
-    public void AddAdult()
+    public async void AddAdult()
     {
         successMessage = "";
         if (AllFilled())
         {
+            IList<Adult> adults = await AdultsService.GetAdultsAsync();
             Adult newAdult = new Adult();
             newAdult.jobTitle = new Job();
-            
-            newAdult.id = AdultsService.GetAdultsAsync().Result.Count;
+
+            newAdult.id = adults.Count;
             newAdult.age = age;
             newAdult.jobTitle.jobTitle = jobTitle;
             newAdult.jobTitle.salary = salary;
@@ -169,11 +170,12 @@ using Assigntment_2_Web_API;
             newAdult.firstName = firstName;
             newAdult.hairColor = hairColor;
             newAdult.lastName = lastName;
-            AdultsService.AddAdultAsync(newAdult);
+            await AdultsService.AddAdultAsync(newAdult);
             Console.WriteLine("New adult added!");
             successMessage = "Successfully added new adult!";
             ClearAll();
         }
+        StateHasChanged();
     }
 
     public bool AllFilled()
