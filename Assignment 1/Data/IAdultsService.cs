@@ -8,7 +8,7 @@ namespace Assigntment_2_Web_API
     {
         Task<IList<Adult>> GetAdultsAsync();
         Task  AddAdultAsync(Adult adult);
-        Task   RemoveAdultAsync(int todoId);
+        Task   RemoveAdultAsync(int adultId);
         Task   UpdateAsync(Adult adult);
     }
 }

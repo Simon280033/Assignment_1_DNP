@@ -162,16 +162,16 @@ using Assigntment_2_Web_API;
                     Console.WriteLine(TheUser.userName + " logged in!");
                     NavigationManager.NavigateTo("/");
                 }
-                else
-                {
-                    errorMessage = "Wrong password!";
-                }
+            }
+            else
+            {
+                errorMessage = "No user with this username!";
             }
         }
         catch (Exception e)
         {
             Console.WriteLine("Failed to get user...");
-            errorMessage = e.Message;
+            errorMessage = "No such user! Please try again.";
         }
     }
 
