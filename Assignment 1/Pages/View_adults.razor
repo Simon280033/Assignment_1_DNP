@@ -146,6 +146,8 @@
     private readonly string HeaderStyle = "text-shadow:0px 0px 2px black; background-color: #d1d1d1;";
     private IList<Adult> adults = new List<Adult>(new Adult[0]);
 
+    private Adult selectedAdult;
+
     private string infoText = "No adult selected";
     
     protected override async Task OnInitializedAsync()
@@ -192,6 +194,7 @@
 
     public void ShowInfo(Adult adult)
     {
+        selectedAdult = adult;
         String infoToShow = BuildInfoText(adult);
         if (!infoText.Equals(infoToShow))
         {
@@ -218,8 +221,15 @@
         str += "Weight: " + adult.weight + "\n";
         str += "Hair color: " + adult.hairColor + "\n";
         str += "Eye color: " + adult.eyeColor + "\n";
-        str += "Job title: " + adult.jobTitle.jobTitle + "\n";
-        str += "Salary: " + adult.jobTitle.salary + "\n";
+        if (adult.job == null)
+        {
+            Console.WriteLine("No job!");
+        }
+        else
+        {
+            str += "Job title: " + adult.job.jobTitle + "\n";
+            str += "Salary: " + adult.job.salary + "\n";
+        }
 
         return str;
     }
@@ -243,7 +253,7 @@
                 else
                 {
     // Job
-                    if (!(adult.jobTitle.jobTitle.Equals("") || adult.jobTitle.jobTitle.ToLower().Contains(jobSearch.ToLower())))
+                    if (!(adult.job.jobTitle.Equals("") || adult.job.jobTitle.ToLower().Contains(jobSearch.ToLower())))
                     {
                         passes = false;
                         continue;
@@ -304,12 +314,12 @@
     // Salary
                             if (!(salaryFilter.Equals("all")))
                             {
-                                if (salaryFilter.Equals("above") && adult.jobTitle.salary < salary)
+                                if (salaryFilter.Equals("above") && adult.job.salary < salary)
                                 {
                                     passes = false;
                                     continue;
                                 }
-                                else if (salaryFilter.Equals("below") && adult.jobTitle.salary > salary)
+                                else if (salaryFilter.Equals("below") && adult.job.salary > salary)
                                 {
                                     passes = false;
                                     continue;

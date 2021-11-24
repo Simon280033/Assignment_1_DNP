@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -24,6 +25,7 @@ namespace Assigntment_2_Web_API
         {
             Console.WriteLine("Getting user...");
             HttpResponseMessage reponse = await client.GetAsync(uri + "/Users?username=" + userName);
+            
             if (!reponse.IsSuccessStatusCode)
             {
                 throw new Exception("Error: " + reponse.ReasonPhrase);
@@ -37,20 +39,6 @@ namespace Assigntment_2_Web_API
             Console.WriteLine("User: " + result.userName);
             
             return result;      
-        }
-
-        public async Task<bool> CheckIfUserExists(string userName)
-        {
-            HttpResponseMessage reponse = await client.GetAsync($"{uri}/Users/{userName}");
-            if (!reponse.IsSuccessStatusCode)
-            {
-                throw new Exception("Error or whatever");
-            }
-
-            string message = await reponse.Content.ReadAsStringAsync();
-            User result = JsonSerializer.Deserialize<User>(message);
-            
-            return (result != null);      
         }
 
         public async Task AddUserAsync(User user)

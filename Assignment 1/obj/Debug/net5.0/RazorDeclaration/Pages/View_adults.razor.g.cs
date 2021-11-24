@@ -13,98 +13,98 @@ namespace Assignment_1.Pages
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Components;
 #nullable restore
-#line 1 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 1 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using System.Net.Http;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 2 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Microsoft.AspNetCore.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 3 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Microsoft.AspNetCore.Components.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 4 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Microsoft.AspNetCore.Components.Forms;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 5 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Microsoft.AspNetCore.Components.Routing;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 6 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Microsoft.AspNetCore.Components.Web;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 7 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 7 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 8 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 8 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Microsoft.JSInterop;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 9 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 9 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Assignment_1;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 10 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 10 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Assignment_1.Shared;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\View_adults.razor"
+#line 2 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\Pages\View_adults.razor"
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\View_adults.razor"
+#line 3 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\Pages\View_adults.razor"
 using Microsoft.Extensions.DependencyInjection;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\View_adults.razor"
+#line 4 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\Pages\View_adults.razor"
 using Models;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\View_adults.razor"
+#line 5 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\Pages\View_adults.razor"
 using Assigntment_2_Web_API;
 
 #line default
@@ -119,7 +119,7 @@ using Assigntment_2_Web_API;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 128 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\View_adults.razor"
+#line 128 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\Pages\View_adults.razor"
        
     private string nameSearch = "";
     private string jobSearch = "";
@@ -140,6 +140,8 @@ using Assigntment_2_Web_API;
     private bool hideInfo = true;
     private readonly string HeaderStyle = "text-shadow:0px 0px 2px black; background-color: #d1d1d1;";
     private IList<Adult> adults = new List<Adult>(new Adult[0]);
+
+    private Adult selectedAdult;
 
     private string infoText = "No adult selected";
     
@@ -187,6 +189,7 @@ using Assigntment_2_Web_API;
 
     public void ShowInfo(Adult adult)
     {
+        selectedAdult = adult;
         String infoToShow = BuildInfoText(adult);
         if (!infoText.Equals(infoToShow))
         {
@@ -213,8 +216,15 @@ using Assigntment_2_Web_API;
         str += "Weight: " + adult.weight + "\n";
         str += "Hair color: " + adult.hairColor + "\n";
         str += "Eye color: " + adult.eyeColor + "\n";
-        str += "Job title: " + adult.jobTitle.jobTitle + "\n";
-        str += "Salary: " + adult.jobTitle.salary + "\n";
+        if (adult.job == null)
+        {
+            Console.WriteLine("No job!");
+        }
+        else
+        {
+            str += "Job title: " + adult.job.jobTitle + "\n";
+            str += "Salary: " + adult.job.salary + "\n";
+        }
 
         return str;
     }
@@ -238,7 +248,7 @@ using Assigntment_2_Web_API;
                 else
                 {
     // Job
-                    if (!(adult.jobTitle.jobTitle.Equals("") || adult.jobTitle.jobTitle.ToLower().Contains(jobSearch.ToLower())))
+                    if (!(adult.job.jobTitle.Equals("") || adult.job.jobTitle.ToLower().Contains(jobSearch.ToLower())))
                     {
                         passes = false;
                         continue;
@@ -299,12 +309,12 @@ using Assigntment_2_Web_API;
     // Salary
                             if (!(salaryFilter.Equals("all")))
                             {
-                                if (salaryFilter.Equals("above") && adult.jobTitle.salary < salary)
+                                if (salaryFilter.Equals("above") && adult.job.salary < salary)
                                 {
                                     passes = false;
                                     continue;
                                 }
-                                else if (salaryFilter.Equals("below") && adult.jobTitle.salary > salary)
+                                else if (salaryFilter.Equals("below") && adult.job.salary > salary)
                                 {
                                     passes = false;
                                     continue;

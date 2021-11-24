@@ -34,7 +34,7 @@
     private string errorMessage;
     private string successMessage;
 
-    public void PerformRegistration() {
+    public async Task PerformRegistration() {
         if (username == null || username.Equals("") || password == null || password.Equals(""))
         {
             Console.WriteLine("Info lacking!");
@@ -48,22 +48,31 @@
         NewUser.role = "Admin";
         NewUser.password = password;
 
-    // We write to json if the user doesnt exist
-        if (UserService.CheckIfUserExists(username).Result)
+        // We check if the user exists
+        User temp;
+        try
         {
-            UserService.AddUserAsync(NewUser);
-            successMessage = "New user successfully registered!";
-            errorMessage = "";
+            temp = await UserService.GetUser(username);
+            if (temp.userName != null)
+            {
+                        errorMessage = "Username already taken! Try again.";
+                        successMessage = "";
+            } else 
+            {
+                        UserService.AddUserAsync(NewUser);
+                        successMessage = "New user successfully registered!";
+                        errorMessage = "";
+            }
         }
-        else
+        catch (Exception e)
         {
-            errorMessage = "Username already taken! Try again.";
-            successMessage = "";
+            Console.WriteLine("Failed to retrieve existing users..."  + e.Message);
+            errorMessage = "Failed to retrieve existing users!";
+            StateHasChanged();
         }
     }
 
     public void Cancel() {
         NavigationManager.NavigateTo("/");
     }
-
 }

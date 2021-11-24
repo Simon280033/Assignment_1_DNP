@@ -13,98 +13,98 @@ namespace Assignment_1.Pages
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Components;
 #nullable restore
-#line 1 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 1 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using System.Net.Http;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 2 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Microsoft.AspNetCore.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 3 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Microsoft.AspNetCore.Components.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 4 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Microsoft.AspNetCore.Components.Forms;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 5 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Microsoft.AspNetCore.Components.Routing;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 6 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Microsoft.AspNetCore.Components.Web;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 7 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 7 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 8 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 8 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Microsoft.JSInterop;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 9 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 9 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Assignment_1;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 10 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 10 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Assignment_1.Shared;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\Add_adults.razor"
+#line 2 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\Pages\Add_adults.razor"
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\Add_adults.razor"
+#line 3 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\Pages\Add_adults.razor"
 using Microsoft.Extensions.DependencyInjection;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\Add_adults.razor"
+#line 4 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\Pages\Add_adults.razor"
 using Models;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\Add_adults.razor"
+#line 5 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\Pages\Add_adults.razor"
 using Assigntment_2_Web_API;
 
 #line default
@@ -119,7 +119,7 @@ using Assigntment_2_Web_API;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 70 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\Add_adults.razor"
+#line 70 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\Pages\Add_adults.razor"
        
     private string firstName = "";
     private string lastName = "";
@@ -134,6 +134,8 @@ using Assigntment_2_Web_API;
 
     private string errorMessage = "";
     private string successMessage = "";
+
+    private IList<Adult> adults;
     
     protected override async Task OnInitializedAsync()
     {
@@ -152,17 +154,26 @@ using Assigntment_2_Web_API;
 
     public async void AddAdult()
     {
+        adults = await AdultsService.GetAdultsAsync();
+
         successMessage = "";
         if (AllFilled())
         {
-            IList<Adult> adults = await AdultsService.GetAdultsAsync();
+        // Job title is the primary key, so we need to check if this job already exists...
+            if (!IsJobUnique(jobTitle))
+            {
+              errorMessage = "Job name already taken! Please enter a new job name...";
+              successMessage = "";
+              StateHasChanged();
+              return;
+            }
             Adult newAdult = new Adult();
-            newAdult.jobTitle = new Job();
+            newAdult.job = new Job();
 
-            newAdult.id = adults.Count;
+            newAdult.id = adults.Count+1;
             newAdult.age = age;
-            newAdult.jobTitle.jobTitle = jobTitle;
-            newAdult.jobTitle.salary = salary;
+            newAdult.job.jobTitle = jobTitle; // Job title is the primary key of job, so this has to be unique...
+            newAdult.job.salary = salary;
             newAdult.height = height;
             newAdult.sex = sexChoice.Substring(0, 1); // We get the first character, so M or F
             newAdult.weight = weight;
@@ -173,6 +184,7 @@ using Assigntment_2_Web_API;
             await AdultsService.AddAdultAsync(newAdult);
             Console.WriteLine("New adult added!");
             successMessage = "Successfully added new adult!";
+            errorMessage = "";
             ClearAll();
         }
         StateHasChanged();
@@ -226,8 +238,22 @@ using Assigntment_2_Web_API;
         if (empties != 0)
         {
             errorMessage = "Please fill out all the fields with proper values!";
+            successMessage = "";
         }
         return (empties == 0);
+    }
+    
+    public bool IsJobUnique(string jobName) {
+        for (int i = 0; i < adults.Count; i++)
+        {
+            if (adults[i].job.jobTitle.ToLower().Equals(jobName.ToLower()))
+            {
+            Console.WriteLine("Job is NOT unique!");
+                return false;
+            }
+        }
+                    Console.WriteLine("Job is unique!");
+        return true;
     }
 
     public void ClearAll()

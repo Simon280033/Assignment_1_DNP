@@ -13,84 +13,84 @@ namespace Assignment_1.Pages
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Components;
 #nullable restore
-#line 1 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 1 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using System.Net.Http;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 2 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Microsoft.AspNetCore.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 3 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Microsoft.AspNetCore.Components.Authorization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 4 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 4 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Microsoft.AspNetCore.Components.Forms;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 5 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Microsoft.AspNetCore.Components.Routing;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 6 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Microsoft.AspNetCore.Components.Web;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 7 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 7 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 8 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 8 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Microsoft.JSInterop;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 9 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 9 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Assignment_1;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 10 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\_Imports.razor"
+#line 10 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\_Imports.razor"
 using Assignment_1.Shared;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\Register.razor"
+#line 2 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\Pages\Register.razor"
 using Models;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 3 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\Register.razor"
+#line 3 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\Pages\Register.razor"
 using Assigntment_2_Web_API;
 
 #line default
@@ -105,14 +105,14 @@ using Assigntment_2_Web_API;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 31 "C:\Users\simon\RiderProjects\Assignment 1\Assignment 1\Pages\Register.razor"
+#line 31 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\Pages\Register.razor"
        
     private string username;
     private string password;
     private string errorMessage;
     private string successMessage;
 
-    public void PerformRegistration() {
+    public async Task PerformRegistration() {
         if (username == null || username.Equals("") || password == null || password.Equals(""))
         {
             Console.WriteLine("Info lacking!");
@@ -126,24 +126,33 @@ using Assigntment_2_Web_API;
         NewUser.role = "Admin";
         NewUser.password = password;
 
-    // We write to json if the user doesnt exist
-        if (UserService.CheckIfUserExists(username).Result)
+        // We check if the user exists
+        User temp;
+        try
         {
-            UserService.AddUserAsync(NewUser);
-            successMessage = "New user successfully registered!";
-            errorMessage = "";
+            temp = await UserService.GetUser(username);
+            if (temp.userName != null)
+            {
+                        errorMessage = "Username already taken! Try again.";
+                        successMessage = "";
+            } else 
+            {
+                        UserService.AddUserAsync(NewUser);
+                        successMessage = "New user successfully registered!";
+                        errorMessage = "";
+            }
         }
-        else
+        catch (Exception e)
         {
-            errorMessage = "Username already taken! Try again.";
-            successMessage = "";
+            Console.WriteLine("Failed to retrieve existing users..."  + e.Message);
+            errorMessage = "Failed to retrieve existing users!";
+            StateHasChanged();
         }
     }
 
     public void Cancel() {
         NavigationManager.NavigateTo("/");
     }
-
 
 #line default
 #line hidden

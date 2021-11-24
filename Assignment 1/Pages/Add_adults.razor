@@ -81,6 +81,8 @@
 
     private string errorMessage = "";
     private string successMessage = "";
+
+    private IList<Adult> adults;
     
     protected override async Task OnInitializedAsync()
     {
@@ -99,17 +101,26 @@
 
     public async void AddAdult()
     {
+        adults = await AdultsService.GetAdultsAsync();
+
         successMessage = "";
         if (AllFilled())
         {
-            IList<Adult> adults = await AdultsService.GetAdultsAsync();
+        // Job title is the primary key, so we need to check if this job already exists...
+            if (!IsJobUnique(jobTitle))
+            {
+              errorMessage = "Job name already taken! Please enter a new job name...";
+              successMessage = "";
+              StateHasChanged();
+              return;
+            }
             Adult newAdult = new Adult();
-            newAdult.jobTitle = new Job();
+            newAdult.job = new Job();
 
-            newAdult.id = adults.Count;
+            newAdult.id = adults.Count+1;
             newAdult.age = age;
-            newAdult.jobTitle.jobTitle = jobTitle;
-            newAdult.jobTitle.salary = salary;
+            newAdult.job.jobTitle = jobTitle; // Job title is the primary key of job, so this has to be unique...
+            newAdult.job.salary = salary;
             newAdult.height = height;
             newAdult.sex = sexChoice.Substring(0, 1); // We get the first character, so M or F
             newAdult.weight = weight;
@@ -120,6 +131,7 @@
             await AdultsService.AddAdultAsync(newAdult);
             Console.WriteLine("New adult added!");
             successMessage = "Successfully added new adult!";
+            errorMessage = "";
             ClearAll();
         }
         StateHasChanged();
@@ -173,8 +185,22 @@
         if (empties != 0)
         {
             errorMessage = "Please fill out all the fields with proper values!";
+            successMessage = "";
         }
         return (empties == 0);
+    }
+    
+    public bool IsJobUnique(string jobName) {
+        for (int i = 0; i < adults.Count; i++)
+        {
+            if (adults[i].job.jobTitle.ToLower().Equals(jobName.ToLower()))
+            {
+            Console.WriteLine("Job is NOT unique!");
+                return false;
+            }
+        }
+                    Console.WriteLine("Job is unique!");
+        return true;
     }
 
     public void ClearAll()

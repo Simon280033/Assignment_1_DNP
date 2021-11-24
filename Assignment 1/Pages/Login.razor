@@ -96,11 +96,15 @@
                     errorMessage = "Wrong password!";
                 }
             }
+            else
+            {
+                errorMessage = "No user with this username!";
+            }
         }
         catch (Exception e)
         {
-            Console.WriteLine("Failed to get user...");
-            errorMessage = "No user with this username!";
+            errorMessage = "Error: " + e.Message;
+            StateHasChanged();
         }
     }
 
