@@ -119,17 +119,18 @@ using Assigntment_2_Web_API;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 128 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\Pages\View_adults.razor"
+#line 172 "C:\Users\simon\RiderProjects\Assignment_2_DNP_Client\Assignment 1\Pages\View_adults.razor"
        
+    // Filters
     private string nameSearch = "";
     private string jobSearch = "";
     private string gender = "any";
     private string ageFilter = "all";
-    private int age = 0;
+    private int ageSearch = 0;
     private string heightFilter = "all";
-    private int height = 0;
+    private int heightSearch = 0;
     private string weightFilter = "all";
-    private int weight = 0;
+    private int weightSearch = 0;
     private string salaryFilter = "all";
     private int salary = 0;
     private string eyeFilter = "all";
@@ -138,6 +139,12 @@ using Assigntment_2_Web_API;
     private IList<String> hairColors = new List<String>();
 
     private bool hideInfo = true;
+    private bool hideInfoText = true;
+    private bool hideEdit = true;
+    private string editButtonText = "Edit adult";
+    private string errorMessage = "";
+    private string successMessage = "";
+
     private readonly string HeaderStyle = "text-shadow:0px 0px 2px black; background-color: #d1d1d1;";
     private IList<Adult> adults = new List<Adult>(new Adult[0]);
 
@@ -145,6 +152,15 @@ using Assigntment_2_Web_API;
 
     private string infoText = "No adult selected";
     
+    // Properties
+    private string firstName = "";
+    private string lastName = "";
+    private string eyeColor = "any";
+    private string hairColor = "all";
+    private int height = 0;
+    private int weight = 0;
+    private int age = 0;
+
     protected override async Task OnInitializedAsync()
     {
         Start();
@@ -181,28 +197,123 @@ using Assigntment_2_Web_API;
         }
     }
 
+    public async void EditAdult()
+    {
+        if (AllFilled())
+        {
+            selectedAdult.firstName = firstName;
+            selectedAdult.lastName = lastName;
+            selectedAdult.eyeColor = eyeColor;
+            selectedAdult.hairColor = hairColor;
+            selectedAdult.height = height;
+            selectedAdult.weight = weight;
+            selectedAdult.age = age;
+            await AdultsService.UpdateAsync(selectedAdult);
+            Console.WriteLine("Adult edited!");
+            successMessage = "Successfully edited adult!";
+            errorMessage = "";
+            ToggleEdit();
+            StateHasChanged();
+        }
+    }
+    
+    public bool AllFilled() 
+    {
+            int empties = 0;
+            errorMessage = "";
+    
+            if (firstName.Equals("") || firstName == null)
+            {
+                empties++;
+            }
+            if (lastName.Equals("") || lastName == null)
+            {
+                empties++;
+            }
+            if (age < 1 || age > 120)
+            {
+                empties++;
+            }
+            if (height < 1 || height > 300)
+            {
+                empties++;
+            }
+            if (weight < 1 || weight > 300)
+            {
+                empties++;
+            }
+            if (eyeColor.Equals("") || eyeColor == null)
+            {
+                empties++;
+            }
+            if (hairColor.Equals("") || hairColor == null)
+            {
+                empties++;
+            }
+            if (empties != 0)
+            {
+                errorMessage = "Please fill out all the fields with proper values!";
+                successMessage = "";
+            }
+            return (empties == 0);
+    }
+
     public void HideInfo()
     {
         hideInfo = true;
+        hideInfoText = true;
+        hideEdit = true;
         infoText = "";
+        editButtonText = "Edit adult";
+    }
+    
+    public void ToggleEdit() 
+    {
+        hideEdit = !hideEdit;
+        hideInfoText = !hideEdit;
+        if (hideEdit) 
+        {
+        editButtonText = "Edit adult";
+        } 
+        else
+        {
+        editButtonText = "Cancel edit";
+        }
     }
 
     public void ShowInfo(Adult adult)
     {
+        errorMessage = "";
+        successMessage = "";
+                    
         selectedAdult = adult;
         String infoToShow = BuildInfoText(adult);
         if (!infoText.Equals(infoToShow))
         {
             infoText = infoToShow;
+            SetInfo();
             hideInfo = false;
+            hideInfoText = false;
         }
         else
         {
             hideInfo = true;
             infoText = "No adult selected";
         }
+        hideEdit = true;
     }
 
+    public void SetInfo()
+    {
+        firstName = selectedAdult.firstName;
+        lastName = selectedAdult.lastName;
+        eyeColor = selectedAdult.eyeColor;
+        hairColor = selectedAdult.hairColor;
+        height = selectedAdult.height;
+        weight = (int) selectedAdult.weight;
+        age = selectedAdult.age;
+    }
+    
     public string BuildInfoText(Adult adult)
     {
         string str = "Info for '" + adult.firstName + " " + adult.lastName + "':\n\n";
@@ -266,12 +377,12 @@ using Assigntment_2_Web_API;
     // Age
                             if (!(ageFilter.Equals("all")))
                             {
-                                if (ageFilter.Equals("above") && adult.age < age)
+                                if (ageFilter.Equals("above") && adult.age < ageSearch)
                                 {
                                     passes = false;
                                     continue;
                                 }
-                                else if (ageFilter.Equals("below") && adult.age > age)
+                                else if (ageFilter.Equals("below") && adult.age > ageSearch)
                                 {
                                     passes = false;
                                     continue;
@@ -280,12 +391,12 @@ using Assigntment_2_Web_API;
     // Height
                                 if (!(heightFilter.Equals("all")))
                                 {
-                                    if (heightFilter.Equals("above") && adult.height < height)
+                                    if (heightFilter.Equals("above") && adult.height < heightSearch)
                                     {
                                         passes = false;
                                         continue;
                                     }
-                                    else if (heightFilter.Equals("below") && adult.height > height)
+                                    else if (heightFilter.Equals("below") && adult.height > heightSearch)
                                     {
                                         passes = false;
                                         continue;
@@ -294,12 +405,12 @@ using Assigntment_2_Web_API;
     // Weight
                                     if (!(weightFilter.Equals("all")))
                                     {
-                                        if (weightFilter.Equals("above") && adult.weight < weight)
+                                        if (weightFilter.Equals("above") && adult.weight < weightSearch)
                                         {
                                             passes = false;
                                             continue;
                                         }
-                                        else if (weightFilter.Equals("below") && adult.weight > weight)
+                                        else if (weightFilter.Equals("below") && adult.weight > weightSearch)
                                         {
                                             passes = false;
                                             continue;
